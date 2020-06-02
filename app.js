@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const methodoOverride = require('method-override');
+const methodOverride = require('method-override');
 
 const app = express();
 app.set('view engine', 'ejs');
