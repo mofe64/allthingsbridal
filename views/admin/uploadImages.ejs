@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('../partials/adminHead'); -%>
+<body>
+<%- include('../partials/adminLoader'); -%>
+ <div id="main-wrapper">
+        <!-- ============================================================== -->
+        <!-- Topbar header - style you can find in pages.scss -->
+        <!-- ============================================================== -->
+        <%- include('../partials/adminNav'); -%>
+        <!-- ============================================================== -->
+        <!-- End Topbar header -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- Left Sidebar - style you can find in sidebar.scss  -->
+        <!-- ============================================================== -->
+        <%- include('../partials/adminSidebar'); -%>
+        <!-- ============================================================== -->
+        <!-- End Left Sidebar - style you can find in sidebar.scss  -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- Page wrapper  -->
+        <!-- ============================================================== -->
+        <div class="page-wrapper">
+            <!-- ============================================================== -->
+            <!-- Container fluid  -->
+            <!-- ============================================================== -->
+            <div class="container-fluid">
+                <!-- ============================================================== -->
+                <!-- Bread crumb and right sidebar toggle -->
+                <!-- ============================================================== -->
+                <div class="row page-titles">
+                    <div class="col-md-5 align-self-center">
+                        <h4 class="text-themecolor">Blank Page</h4>
+                    </div>
+                    <div class="col-md-7 align-self-center text-right">
+                        <div class="d-flex justify-content-end align-items-center">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+                                <li class="breadcrumb-item active">Create Post</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+                <!-- ============================================================== -->
+                <!-- End Bread crumb and right sidebar toggle -->
+                <!-- ============================================================== -->
+                <!-- ============================================================== -->
+                <!-- Start Page Content -->
+                <!-- ============================================================== -->
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="container upload-btn">
+                                                <div class="upload-item">
+                                                     <h4>Upload new Picture</h4>
+                                                        <button id="upload_widget" class="cloudinary-button">Upload files</button>
+                                                </div>
+                                                <br>
+                                                <br>
+                                                <br>
+                                                <br>
+                                                <br>
+                                                <div class="upload-item">
+                                                    <h4>Browse Uploaded Videos</h4>
+                                                    <button type=""  id="open-btn" class="open-btn">Select Image </button>
+                                                </div>
+                                            </div>
+                                            <script src="https://widget.cloudinary.com/v2.0/global/all.js" type="text/javascript"></script> 
+                                            <script src="https://media-library.cloudinary.com/global/all.js"></script> 
+                                            <script type="text/javascript">  
+                                                var myWidget = cloudinary.createUploadWidget({
+                                                cloudName: 'modupe-atb', 
+                                                cropping: true,
+                                                uploadPreset: 'hahw4pml'}, (error, result) => { 
+                                                if (!error && result && result.event === "success") { 
+                                                console.log('Done! Here is the image info: ', result.info); 
+                                                }})
+
+                                                document.getElementById("upload_widget").addEventListener("click", function(){
+                                                myWidget.open();
+                                                }, false);
+                                            </script>
+                                            <script>
+                                                window.ml = cloudinary.createMediaLibrary({
+                                                cloud_name: 'modupe-atb',
+                                                api_key: '346749384357787',
+                                                username: 'modupeatb@gmail.com',
+                                                button_class: 'myBtn',
+                                                button_caption: 'choose picture',
+                                                }, {
+                                                    insertHandler: function (data) {
+                                                    data.assets.forEach(asset => { console.log("Inserted asset:",
+                                                    JSON.stringify(asset, null, 2)) })
+                                                    }
+                                                    },
+                                                    document.getElementById("open-btn")
+                                                )
+                                            </script>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                <!-- ============================================================== -->
+                <!-- End PAge Content -->
+                <!-- ============================================================== -->
+            </div>
+            <!-- ============================================================== -->
+            <!-- End Container fluid  -->
+            <!-- ============================================================== -->
+        </div>
+        <!-- ============================================================== -->
+        <!-- End Page wrapper  -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+    </div>
+    <%- include('../partials/adminScripts'); -%>
+    <script src="https://cdn.tiny.cloud/1/8d70t180vjz98lqcpzn1p79fydbhgghd89rby8ela9cd6ts0/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+       tinymce.init({
+            selector: '#editor',  // change this value according to your HTML
+            toolbar:  ' code undo redo styleselect bold italic alignleft aligncenter alignright bullist numlist outdent indent code image fontselect fontsizeselect emoticons fullscreen link media wordcount',
+            plugins : ' autoresize advlist link image lists code imagetools paste emoticons fullscreen link media wordcount',
+            menubar: 'view insert',
+            image_caption: true
+        });
+    </script>
+</body>
+</html>

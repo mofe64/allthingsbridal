@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('../partials/adminHead'); -%>
+<body>
+<%- include('../partials/adminLoader'); -%>
+ <div id="main-wrapper">
+        <!-- ============================================================== -->
+        <!-- Topbar header - style you can find in pages.scss -->
+        <!-- ============================================================== -->
+        <%- include('../partials/adminNav'); -%>
+        <!-- ============================================================== -->
+        <!-- End Topbar header -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- Left Sidebar - style you can find in sidebar.scss  -->
+        <!-- ============================================================== -->
+        <%- include('../partials/adminSidebar'); -%>
+        <!-- ============================================================== -->
+        <!-- End Left Sidebar - style you can find in sidebar.scss  -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- Page wrapper  -->
+        <!-- ============================================================== -->
+        <div class="page-wrapper">
+            <!-- ============================================================== -->
+            <!-- Container fluid  -->
+            <!-- ============================================================== -->
+            <div class="container-fluid">
+                <!-- ============================================================== -->
+                <!-- Bread crumb and right sidebar toggle -->
+                <!-- ============================================================== -->
+                <div class="row page-titles">
+                    <div class="col-md-5 align-self-center">
+                        <h4 class="text-themecolor">Blank Page</h4>
+                    </div>
+                    <div class="col-md-7 align-self-center text-right">
+                        <div class="d-flex justify-content-end align-items-center">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+                                <li class="breadcrumb-item active">Create Post</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+                <!-- ============================================================== -->
+                <!-- End Bread crumb and right sidebar toggle -->
+                <!-- ============================================================== -->
+                <!-- ============================================================== -->
+                <!-- Start Page Content -->
+                <!-- ============================================================== -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <form action="/admin/editpost/<%=post.slug %>?_method=PATCH" method="POST">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Post Title</label>
+                                        <input type="text" class="form-control"  name="title" placeholder="Enter Title" value="<%=post.title%>">
+                                        <small  class="form-text text-muted">What's the title of this post. </small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Cover Image</label>
+                                        <input type="text" class="form-control"  name="coverImage" placeholder="Please Enter the link to the cover image" 
+                                        value="<%= post.coverImage %>">
+                                        <small  class="form-text text-muted">Enter cloudinary link to the cover image.</small>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="exampleFormControlTextarea1">Short Intro Text</label>
+                                        <textarea class="form-control" id="exampleFormControlTextarea1" name="introText" rows="3"> <%= post.introText %></textarea>
+                                        <small  class="form-text text-muted">Enter a short introductory text for your post.</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleFormControlTextarea1">Post</label>
+                                        <small  class="form-text text-muted">Enter the body of post.</small>
+                                        <textarea class="form-control" id="editor" name="post" rows="3"> <%=post.post %></textarea>
+                                    </div>
+                                    <div class="form-check">
+                                        <% if (post.featured === true) { %>
+                                        <input type="checkbox" class="form-check-input" id="exampleCheck1" checked>
+                                        <% }else { %>
+                                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                                         <% } %>
+                                        <label class="form-check-label" for="exampleCheck1">Featured</label>
+                                    </div>
+                                    <br>
+                                    <br>
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- ============================================================== -->
+                <!-- End PAge Content -->
+                <!-- ============================================================== -->
+            </div>
+            <!-- ============================================================== -->
+            <!-- End Container fluid  -->
+            <!-- ============================================================== -->
+        </div>
+        <!-- ============================================================== -->
+        <!-- End Page wrapper  -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+    </div>
+    <%- include('../partials/adminScripts'); -%>
+    <script src="https://cdn.tiny.cloud/1/8d70t180vjz98lqcpzn1p79fydbhgghd89rby8ela9cd6ts0/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+       tinymce.init({
+            selector: '#editor',  // change this value according to your HTML
+            toolbar:  ' code undo redo styleselect bold italic alignleft aligncenter alignright bullist numlist outdent indent code image fontselect fontsizeselect emoticons fullscreen link media wordcount',
+            plugins : ' autoresize advlist link image lists code imagetools paste emoticons fullscreen link media wordcount',
+            menubar: 'view insert',
+            image_caption: true
+        });
+    </script>
+</body>
+</html>
