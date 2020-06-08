@@ -31,7 +31,7 @@
                 <!-- ============================================================== -->
                 <div class="row page-titles">
                     <div class="col-md-5 align-self-center">
-                        <h4 class="text-themecolor">Create a new post</h4>
+                        <h4 class="text-themecolor">Blank Page</h4>
                     </div>
                     <div class="col-md-7 align-self-center text-right">
                         <div class="d-flex justify-content-end align-items-center">
@@ -52,36 +52,60 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-                                <form action="/admin/newpost" method="post">
+                                <form action="/admin/newcategory" method="post">
                                     <div class="form-group">
-                                        <label for="exampleInputEmail1">Post Title</label>
-                                        <input type="text" class="form-control"  name="title" placeholder="Enter Title">
-                                        <small  class="form-text text-muted">What's the title of this post.</small>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1">Cover Image</label>
-                                        <input type="text" class="form-control"  name="coverImage" placeholder="Please Enter the link to the cover image">
-                                        <small  class="form-text text-muted">Enter cloudinary link to the cover image.</small>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="exampleFormControlTextarea1">Short Intro Text</label>
-                                        <textarea class="form-control" id="exampleFormControlTextarea1" name="introText" rows="3"></textarea>
-                                        <small  class="form-text text-muted">Enter a short introductory text for your post.</small>
+                                        <h2>Create a new Category</h2>
+                                        <label for="exampleInputEmail1">Category Name</label>
+                                        <input type="text" class="form-control"  name="name" placeholder="Enter name">
+                                        <small  class="form-text text-muted">What's the name of this Category.</small>
                                     </div>
                                     <div class="form-group">
-                                        <label for="exampleFormControlTextarea1">Post</label>
-                                        <small  class="form-text text-muted">Enter the body of post.</small>
-                                        <textarea class="form-control" id="editor" name="post" rows="3"></textarea>
+                                        <label for="exampleInputEmail1">Category Cover image</label>
+                                        <input type="text" class="form-control"  name="categoryImage" placeholder="Enter link for cover Image">
+                                        <small  class="form-text text-muted">Cover Image for this category.</small>
                                     </div>
-                                    <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                                        <label class="form-check-label" for="exampleCheck1">Featured</label>
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Category Decription</label>
+                                        <input type="text" class="form-control"  name="description" placeholder="Enter short decription of the category">
+                                        <small  class="form-text text-muted">Short Description of the category.</small>
                                     </div>
-                                    <br>
-                                    <br>
+                                   
                                     <button type="submit" class="btn btn-primary">Submit</button>
                                 </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <!-- column -->
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">All Categories</h4>
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Title</th>
+                                                <th>date</th>
+                                                <th>Edit</th>
+                                                <th>Delete</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        <% categories.forEach((category,index) => { %>
+                                            <tr>
+                                                <td> <%= index + 1  %></td>
+                                                <td><%= category.name %></td>
+                                                <td><%= moment(category.createdAt).format('DD-MMMM-YYYY') %></td>
+                                                <td><span class="label label-warning"><a href="/admin/category/edit/<%=category._id %>">Edit</a></span> </td>
+                                                <td><span class="label label-danger"><a href="/admin/category/delete/<%=category._id %>">Delete</a></span> </td>
+                                            </tr>
+                                            <% }) %>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -102,14 +126,5 @@
     </div>
     <%- include('../partials/adminScripts'); -%>
     <script src="https://cdn.tiny.cloud/1/8d70t180vjz98lqcpzn1p79fydbhgghd89rby8ela9cd6ts0/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
-    <script>
-       tinymce.init({
-            selector: '#editor',  // change this value according to your HTML
-            toolbar:  ' code undo redo styleselect bold italic alignleft aligncenter alignright bullist numlist outdent indent code image fontselect fontsizeselect emoticons fullscreen link media wordcount',
-            plugins : ' autoresize advlist link image lists code imagetools paste emoticons fullscreen link media wordcount',
-            menubar: 'view insert',
-            image_caption: true
-        });
-    </script>
 </body>
 </html>
