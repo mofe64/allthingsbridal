@@ -6,18 +6,24 @@ const AppError = require('../utils/appError');
 const moment = require('moment');
 
 const author = 'Modupe Adebiyi';
+
 //get blog home page
 exports.getBlogHome = catchAsync(async (req, res, next) => {
   const posts = await Post.find();
-  const featuredPosts = await Post.find({ featured: true });
+  const featuredPosts = await Post.find({
+    featured: true,
+  });
   res.status(200).render('index', {
     posts,
     featuredPosts,
   });
 });
 
+//get single blog post
 exports.getBlogPost = catchAsync(async (req, res, next) => {
-  const post = await Post.findOne({ slug: req.params.slug });
+  const post = await Post.findOne({
+    slug: req.params.slug,
+  });
   if (!post) {
     return next(new AppError('No post found with that slug'));
   }
@@ -27,6 +33,7 @@ exports.getBlogPost = catchAsync(async (req, res, next) => {
     author,
   });
 });
+
 //get gallery home page
 exports.getGalleryHome = catchAsync(async (req, res, next) => {
   const galleryImages = await Gallery.find().populate({
@@ -37,6 +44,7 @@ exports.getGalleryHome = catchAsync(async (req, res, next) => {
     galleryImages,
   });
 });
+
 //get single gallery image
 exports.getGalleryImage = catchAsync(async (req, res, next) => {
   const image = await Gallery.findById(req.params.id);
@@ -44,6 +52,7 @@ exports.getGalleryImage = catchAsync(async (req, res, next) => {
     image,
   });
 });
+
 //get the categories page in the gallery
 exports.getGalleryCategories = catchAsync(async (req, res, next) => {
   const categories = await Category.find();
@@ -51,16 +60,19 @@ exports.getGalleryCategories = catchAsync(async (req, res, next) => {
     categories,
   });
 });
+
 //get about page
 exports.getAbout = catchAsync(async (req, res, next) => {
   res.status(200).render('about');
 });
 
+//create post
 exports.createPost = catchAsync(async (req, res, next) => {
   const post = await Post.create(req.body);
   res.status(201).render('index');
 });
 
+//get all posts
 exports.getPosts = catchAsync(async (req, res, next) => {
   const posts = await Post.find();
   res.status(200).render('index', {
@@ -68,12 +80,15 @@ exports.getPosts = catchAsync(async (req, res, next) => {
   });
 });
 
+//get admin dashboard
 exports.getAdminHome = catchAsync(async (req, res, next) => {
   const posts = await Post.find();
-  const images = await Gallery.find().populate({
-    path: 'category',
-    fields: 'name',
-  });
+  const images = await Gallery.find()
+    .populate({
+      path: 'category',
+      fields: 'name',
+    })
+    .limit(5);
   res.status(200).render('admin/adminHome', {
     posts,
     images,
@@ -97,7 +112,9 @@ exports.createPost = catchAsync(async (req, res, next) => {
 });
 
 exports.getPostEditPage = catchAsync(async (req, res, next) => {
-  const post = await Post.findOne({ slug: req.params.slug });
+  const post = await Post.findOne({
+    slug: req.params.slug,
+  });
   //console.log(post);
   res.status(200).render('admin/editPost', {
     post,
@@ -111,11 +128,14 @@ exports.updatePost = catchAsync(async (req, res, next) => {
   } else {
     isFeatured = false;
   }
-  const post = await Post.findOne({ slug: req.params.slug });
+  const post = await Post.findOne({
+    slug: req.params.slug,
+  });
   const postID = post._id;
   if (!post) {
     return next(new AppError('Post not found', 404));
   }
+
   const updatedPost = await Post.findByIdAndUpdate(
     postID,
     {
@@ -142,14 +162,18 @@ exports.updatePost = catchAsync(async (req, res, next) => {
 });
 
 exports.getDeletePostPage = catchAsync(async (req, res, next) => {
-  const post = await Post.findOne({ slug: req.params.slug });
+  const post = await Post.findOne({
+    slug: req.params.slug,
+  });
   res.status(200).render('admin/deletePost', {
     post,
   });
 });
 
 exports.deletePost = catchAsync(async (req, res, next) => {
-  const post = await Post.findOne({ slug: req.params.slug });
+  const post = await Post.findOne({
+    slug: req.params.slug,
+  });
   if (!post) {
     return next(new AppError('No post found with that id', 404));
   }
@@ -289,7 +313,9 @@ exports.deleteCategory = catchAsync(async (req, res, next) => {
 });
 
 exports.getCategoryImages = catchAsync(async (req, res, next) => {
-  const images = await Gallery.find({ category: req.params.id });
+  const images = await Gallery.find({
+    category: req.params.id,
+  });
   //console.log(images);
   res.status(200).render('categoryImages', {
     images,

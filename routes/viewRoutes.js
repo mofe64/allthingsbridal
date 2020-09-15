@@ -3,6 +3,7 @@ const express = require('express');
 //const adminController = require('../controllers/adminController');
 //const galleryController = require('../controllers/galleryContoller');
 const viewController = require('../controllers/viewController');
+const authController = require('../controllers/authController');
 
 const router = express.Router();
 
@@ -16,7 +17,16 @@ router.get('/gallery/categories', viewController.getGalleryCategories);
 router.get('/gallery/category/:id/images', viewController.getCategoryImages);
 
 //admin routes
-router.get('/admin', viewController.getAdminHome);
+router.get('/login', authController.getLoginPage);
+router.get('/admin', authController.getLoginPage);
+router.post('/login', authController.login);
+router.get('/register', authController.getRegisterPage);
+router.post('/register', authController.register);
+router.get(
+  '/admin/dashboard',
+  authController.ensureAuthenticated,
+  viewController.getAdminHome
+);
 router.get('/admin/newpost', viewController.getCreatePostPage);
 router.post('/admin/newpost', viewController.createPost);
 router.get('/admin/editpost/:slug', viewController.getPostEditPage);
