@@ -37,7 +37,7 @@ const sendErrorDev = (err, req, res) => {
     });
   }
   //error handling for rendered website
-  console.error('error', err);
+  //console.error('error', err);
   return res.status(err.statusCode).render('error', {
     title: 'Something went wrong!',
     msg: err.message,
@@ -91,7 +91,7 @@ module.exports = (err, req, res, next) => {
     //console.log(err.name);
 
     let error = {
-      ...err
+      ...err,
     };
     error.message = err.message;
     error.name = err.name;

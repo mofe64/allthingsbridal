@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('../partials/adminHead'); -%>
+<body>
+<%- include('../partials/adminLoader'); -%>
+ <div id="main-wrapper">
+        <%- include('../partials/adminNav'); -%>
+        <%- include('../partials/adminSidebar'); -%>
+        <div class="page-wrapper">
+
+            <div class="container-fluid">
+                <div class="row page-titles">
+                    <div class="col-md-5 align-self-center">
+                        <h4>Are you sure you want to edit this Image ?</h4>
+                    </div>
+                    <div class="col-md-7 align-self-center text-right">
+                        <div class="d-flex justify-content-end align-items-center">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+                                <li class="breadcrumb-item active">Edit Image</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+
+                 <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <form action="/admin/galleryimage/<%=image._id %>/edit?_method=PATCH" method="POST">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Image Title</label>
+                                        <input type="text" class="form-control"  name="title" value="<%= image.title %>">
+                                        <small  class="form-text text-muted">What's the title of this Image.</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Cover Image</label>
+                                        <input type="text" class="form-control"  name="coverImage" value="<%= image.image %>">
+                                        <small  class="form-text text-muted">Enter cloudinary link to the cover image.</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Text</label>
+                                        <input type="text" class="form-control"  name="text" value="<%= image.text %>">
+                                        <small  class="form-text text-muted">Enter any text, comment or description.</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="category">Collection</label>
+                                        <select name="category" id="">
+                                            <% categories.forEach((category,index) => { %>
+                                                <option 
+                                                value="<%=category._id%>"
+                                                <% if (category.name == image.category.name) {%>
+                                                selected 
+                                                <%} %>
+                                                 > <%=category.name %></option>
+                                            <% }) %>
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+        </div>
+    </div>
+    <%- include('../partials/adminScripts'); -%>
+    <script src="https://cdn.tiny.cloud/1/8d70t180vjz98lqcpzn1p79fydbhgghd89rby8ela9cd6ts0/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+</body>
+</html>

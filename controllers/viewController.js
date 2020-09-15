@@ -4,6 +4,7 @@ const Post = require('../models/postModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const moment = require('moment');
+const { findByIdAndUpdate } = require('../models/galleryModel');
 
 const author = 'Modupe Adebiyi';
 
@@ -21,6 +22,7 @@ exports.getBlogHome = catchAsync(async (req, res, next) => {
 
 //get single blog post
 exports.getBlogPost = catchAsync(async (req, res, next) => {
+  const latestPosts = await Post.find().limit(3);
   const post = await Post.findOne({
     slug: req.params.slug,
   });
@@ -31,6 +33,7 @@ exports.getBlogPost = catchAsync(async (req, res, next) => {
     post,
     moment,
     author,
+    latestPosts,
   });
 });
 
@@ -224,6 +227,29 @@ exports.addImageToGallery = catchAsync(async (req, res, next) => {
   });
 
   res.status(201).redirect('/admin/managegallery');
+});
+
+exports.getGalleryImageEditPage = catchAsync(async (req, res, next) => {
+  const image = await Gallery.findById(req.params.id).populate({
+    path: 'category',
+    fields: 'name',
+  });
+  const categories = await Category.find();
+  res.status(200).render('admin/editGalleryImage', {
+    image,
+    moment,
+    categories,
+  });
+});
+
+exports.editImage = catchAsync(async (req, res, next) => {
+  const image = await Gallery.findByIdAndUpdate(req.params.id, {
+    image: req.body.coverImage,
+    title: req.body.title,
+    category: req.body.category,
+    text: req.body.text,
+  });
+  res.status(200).redirect('/admin/managegallery');
 });
 
 exports.getDeleteGalleryImage = catchAsync(async (req, res, next) => {

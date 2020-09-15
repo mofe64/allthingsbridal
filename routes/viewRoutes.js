@@ -52,4 +52,11 @@ router.delete(
   '/admin/galleryimage/:id/delete',
   viewController.deleteGalleryImage
 );
+
+router.get(
+  '/admin/galleryimage/:id/edit',
+  viewController.getGalleryImageEditPage
+);
+router.patch('/admin/galleryimage/:id/edit', viewController.editImage);
+
 module.exports = router;

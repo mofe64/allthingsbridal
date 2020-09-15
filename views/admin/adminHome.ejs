@@ -85,7 +85,7 @@
                                             <td class="text-center"><%= index + 1 %></td>
                                             <td class="txt-oflo"> <a href="/admin/editpost/<%= post.slug %>"> <%= post.title %>  </a></td>
                                             <td class="txt-oflo">April 18, 2017</td>
-                                            <td><span class="text-success">$24</span></td>
+                                            <td><span class="text-success"><%= post.featured %></span></td>
                                         </tr>
                                         <% }) %>
                                     
