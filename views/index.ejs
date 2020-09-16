@@ -10,7 +10,6 @@
 
 <!-- featured post -->
 <section>
-
   <div class="container-fluid p-sm-0">
     <div class="row featured-post-slider">
       <% featuredPosts.forEach(post => { %>
@@ -39,7 +38,7 @@
         <div class="col-lg-4 col-sm-6 mb-5">
           <article class="text-center">
             <img class="img-fluid mb-4" src="/images/masonary-post/post-1.jpg" alt="post-thumb">
-            <h4 class="title-border"><a class="text-dark" href="blog-single.html"><%=post.title %></a></h4>
+            <h4 class="title-border"><a class="text-dark" href="/post/<%=post.slug %>"><%=post.title %></a></h4>
             <p><%= post.introText %></p>
             <a href="/post/<%=post.slug %>" class="btn btn-transparent">read more</a>
           </article>

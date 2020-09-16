@@ -10,10 +10,12 @@ const author = 'Modupe Adebiyi';
 
 //get blog home page
 exports.getBlogHome = catchAsync(async (req, res, next) => {
-  const posts = await Post.find();
+  const posts = await Post.find().sort('-createdAt');
   const featuredPosts = await Post.find({
     featured: true,
-  });
+  })
+    .limit(4)
+    .sort('-createdAt');
   res.status(200).render('index', {
     posts,
     featuredPosts,
@@ -72,7 +74,7 @@ exports.getAbout = catchAsync(async (req, res, next) => {
 //create post
 exports.createPost = catchAsync(async (req, res, next) => {
   const post = await Post.create(req.body);
-  res.status(201).render('index');
+  res.status(201).redirect('/admin/dashboard');
 });
 
 //get all posts
@@ -85,7 +87,7 @@ exports.getPosts = catchAsync(async (req, res, next) => {
 
 //get admin dashboard
 exports.getAdminHome = catchAsync(async (req, res, next) => {
-  const posts = await Post.find();
+  const posts = await Post.find().limit(10).sort('-createdAt');
   const images = await Gallery.find()
     .populate({
       path: 'category',
@@ -99,10 +101,12 @@ exports.getAdminHome = catchAsync(async (req, res, next) => {
   });
 });
 
+//get page to create a post
 exports.getCreatePostPage = catchAsync(async (req, res, next) => {
   res.status(200).render('admin/createPost');
 });
 
+//create a post
 exports.createPost = catchAsync(async (req, res, next) => {
   const newPost = await Post.create({
     title: req.body.title,
@@ -114,6 +118,7 @@ exports.createPost = catchAsync(async (req, res, next) => {
   res.status(200).redirect('/admin');
 });
 
+// get page to edit a post
 exports.getPostEditPage = catchAsync(async (req, res, next) => {
   const post = await Post.findOne({
     slug: req.params.slug,
@@ -124,6 +129,7 @@ exports.getPostEditPage = catchAsync(async (req, res, next) => {
   });
 });
 
+//update a post
 exports.updatePost = catchAsync(async (req, res, next) => {
   let isFeatured;
   if (req.body.featured) {
@@ -161,9 +167,10 @@ exports.updatePost = catchAsync(async (req, res, next) => {
       )
     );
   }
-  res.status(200).redirect('/admin');
+  res.status(200).redirect('/admin/dashboard');
 });
 
+//get page to delete a psot
 exports.getDeletePostPage = catchAsync(async (req, res, next) => {
   const post = await Post.findOne({
     slug: req.params.slug,
@@ -173,6 +180,7 @@ exports.getDeletePostPage = catchAsync(async (req, res, next) => {
   });
 });
 
+//delete post
 exports.deletePost = catchAsync(async (req, res, next) => {
   const post = await Post.findOne({
     slug: req.params.slug,
@@ -189,6 +197,8 @@ exports.deletePost = catchAsync(async (req, res, next) => {
   }
   res.status(204).redirect('/admin/manageposts');
 });
+
+//get page to upload image
 exports.getImageUploadPage = catchAsync(async (req, res, next) => {
   res.status(200).render('admin/uploadImages');
 });
@@ -202,6 +212,7 @@ exports.getGalleryManagePage = catchAsync(async (req, res, next) => {
   });
 });
 
+//get page to manage posts
 exports.getPostManagePage = catchAsync(async (req, res, next) => {
   const posts = await Post.find();
   res.status(200).render('admin/managePosts', {
@@ -209,6 +220,7 @@ exports.getPostManagePage = catchAsync(async (req, res, next) => {
   });
 });
 
+// get page to upload image to gallery
 exports.getGalleryUploadPage = catchAsync(async (req, res, next) => {
   const categories = await Category.find();
   res.status(200).render('admin/newGalleryImage', {
@@ -216,6 +228,7 @@ exports.getGalleryUploadPage = catchAsync(async (req, res, next) => {
   });
 });
 
+//add image to gallery
 exports.addImageToGallery = catchAsync(async (req, res, next) => {
   const tags = req.body.tag.split(',');
   const newImage = await Gallery.create({
@@ -229,6 +242,7 @@ exports.addImageToGallery = catchAsync(async (req, res, next) => {
   res.status(201).redirect('/admin/managegallery');
 });
 
+//get page to edit gallery image
 exports.getGalleryImageEditPage = catchAsync(async (req, res, next) => {
   const image = await Gallery.findById(req.params.id).populate({
     path: 'category',
@@ -242,6 +256,7 @@ exports.getGalleryImageEditPage = catchAsync(async (req, res, next) => {
   });
 });
 
+// edit gallery image
 exports.editImage = catchAsync(async (req, res, next) => {
   const image = await Gallery.findByIdAndUpdate(req.params.id, {
     image: req.body.coverImage,
@@ -252,6 +267,7 @@ exports.editImage = catchAsync(async (req, res, next) => {
   res.status(200).redirect('/admin/managegallery');
 });
 
+//get page to delete gallery image
 exports.getDeleteGalleryImage = catchAsync(async (req, res, next) => {
   const image = await Gallery.findById(req.params.id).populate({
     path: 'category',
@@ -263,11 +279,13 @@ exports.getDeleteGalleryImage = catchAsync(async (req, res, next) => {
   });
 });
 
+//delete gallery image
 exports.deleteGalleryImage = catchAsync(async (req, res, next) => {
   const image = await Gallery.findByIdAndDelete(req.params.id);
   res.status(204).redirect('/admin/managegallery');
 });
 
+//get collections page
 exports.getCategoryPage = catchAsync(async (req, res, next) => {
   const categories = await Category.find();
   res.status(200).render('admin/category', {
@@ -276,6 +294,7 @@ exports.getCategoryPage = catchAsync(async (req, res, next) => {
   });
 });
 
+//create a new collection
 exports.createCategory = catchAsync(async (req, res, next) => {
   let description;
   if (req.body.description == '') {
@@ -291,6 +310,7 @@ exports.createCategory = catchAsync(async (req, res, next) => {
   res.status(201).redirect('/admin/categories');
 });
 
+//get page to edit collections
 exports.getCategoryEditPage = catchAsync(async (req, res, next) => {
   const category = await Category.findById(req.params.id);
   res.status(200).render('admin/editCategory.ejs', {
@@ -298,6 +318,7 @@ exports.getCategoryEditPage = catchAsync(async (req, res, next) => {
   });
 });
 
+//update collections
 exports.updateCategory = catchAsync(async (req, res, next) => {
   let description;
   if (req.body.description == '') {
@@ -323,6 +344,7 @@ exports.updateCategory = catchAsync(async (req, res, next) => {
   res.status(200).redirect('/admin/categories');
 });
 
+//get page to delete a collection
 exports.getCategoryDeletePage = catchAsync(async (req, res, next) => {
   const category = await Category.findById(req.params.id);
   res.status(200).render('admin/deleteCategory', {
@@ -330,6 +352,7 @@ exports.getCategoryDeletePage = catchAsync(async (req, res, next) => {
   });
 });
 
+//delete a collection
 exports.deleteCategory = catchAsync(async (req, res, next) => {
   const category = await Category.findByIdAndDelete(req.params.id);
   if (!category) {
@@ -338,10 +361,11 @@ exports.deleteCategory = catchAsync(async (req, res, next) => {
   res.status(204).redirect('/admin/categories');
 });
 
+//get all images in a collection
 exports.getCategoryImages = catchAsync(async (req, res, next) => {
   const images = await Gallery.find({
     category: req.params.id,
-  });
+  }).sort('-createdAt');
   //console.log(images);
   res.status(200).render('categoryImages', {
     images,
